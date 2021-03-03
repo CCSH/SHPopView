@@ -1,7 +1,7 @@
 # SHPopView
 各种动画弹窗基础
 # 使用 pod 导入
-[![Pod Version](http://img.shields.io/cocoapods/v/SHPopView.svg?style=flat)](http://cocoadocs.org/docsets/SHPopView/)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SHPopView.svg)](https://img.shields.io/cocoapods/v/SHPopView.svg)
 ```
 pod 'SHPopView'
 ```
