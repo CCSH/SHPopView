@@ -14,9 +14,6 @@
 
 @property (nonatomic, strong) UIView *maskView;
 
-//隐藏
-@property (nonatomic, assign) BOOL isHide;
-
 @end
 
 @implementation SHPopView
@@ -269,7 +266,8 @@
     self.maskView.backgroundColor = self.maskColor;
     [view addSubview:self.maskView];
 
-    self.isHide = NO;
+    _isShowing = YES;
+    
     [self.contentView.layer removeAnimationForKey:kSHPopViewAnimation];
     //动画
     switch (self.showAnimation) {
@@ -313,10 +311,10 @@
 
 #pragma mark 隐藏
 - (void)hide {
-    if (self.isHide) {
+    if (!self.isShowing) {
         return;
     }
-    self.isHide = YES;
+    _isShowing = NO;
     [self.contentView.layer removeAnimationForKey:kSHPopViewAnimation];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

@@ -36,6 +36,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) CGFloat duration;
 //是否抖动
 @property (nonatomic, assign) BOOL isJitter;
+//内容是否显示中
+@property (nonatomic, assign, readonly) BOOL isShowing;
 
 #pragma mark 显示
 - (void)show;
