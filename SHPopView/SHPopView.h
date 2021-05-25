@@ -22,10 +22,8 @@ typedef enum : NSUInteger {
     SHPopViewAnimation_rotationZ,//旋转、中心点方向
 } SHPopViewAnimation;
 
-@interface SHPopView : NSObject
+@interface SHPopView : UIView
 
-//蒙板颜色(默认 [[UIColor blackColor] colorWithAlphaComponent:0.3])
-@property (nonatomic, strong) UIColor *maskColor;
 //内容视图
 @property (nonatomic, strong) UIView *contentView;
 //显示动画
