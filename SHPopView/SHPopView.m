@@ -10,7 +10,7 @@
 #define kSHPopViewAnimation @"kSHPopViewAnimation"
 #define kSHAngle(R) ((R) / 180.0 * M_PI)
 
-@interface SHPopView ()<UIGestureRecognizerDelegate>
+@interface SHPopView () <UIGestureRecognizerDelegate>
 
 @end
 
@@ -30,6 +30,7 @@
     return self;
 }
 
+#pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if ([touch.view isDescendantOfView:self.contentView]) {
         return NO;
@@ -55,7 +56,7 @@
     //保持动画结束之后的状态
     animation.fillMode = kCAFillModeBoth;
     animation.removedOnCompletion = NO;
-    
+
     return animation;
 }
 
@@ -74,7 +75,7 @@
     animation.duration = self.duration;
     //进行改变
     animation.fromValue = @0;
-  
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -96,7 +97,7 @@
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
     animation.fromValue = @(-CGRectGetMaxY(view.frame));
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -108,7 +109,7 @@
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
     animation.fromValue = @(CGRectGetHeight(self.frame) + CGRectGetMidY(view.frame));
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -120,7 +121,7 @@
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
     animation.fromValue = @(-CGRectGetMaxX(view.frame));
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -132,7 +133,7 @@
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
     animation.fromValue = @(CGRectGetWidth(self.frame) + CGRectGetMidX(view.frame));
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -146,7 +147,7 @@
     animation.duration = self.duration;
     //进行改变
     animation.toValue = @0;
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -157,7 +158,7 @@
     animation.keyPath = @"transform.scale";
     //进行改变
     animation.toValue = @0;
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -169,7 +170,7 @@
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
     animation.toValue = @(-CGRectGetMaxY(view.frame));
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -181,7 +182,7 @@
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
     animation.toValue = @(CGRectGetHeight(self.frame) + CGRectGetMidY(view.frame));
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -193,7 +194,7 @@
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
     animation.toValue = @(-CGRectGetMaxX(view.frame));
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -205,37 +206,37 @@
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
     animation.toValue = @(CGRectGetWidth(self.frame) + CGRectGetMidX(view.frame));
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
 
 #pragma mark 公共动画
 #pragma mark 旋转
-- (void)animationRotation:(UIView *)view direction:(NSString *)direction{
+- (void)animationRotation:(UIView *)view direction:(NSString *)direction {
     CABasicAnimation *animation = [self getAnimation];
     //动画效果
-    animation.keyPath = [NSString stringWithFormat:@"transform.rotation.%@",direction];
+    animation.keyPath = [NSString stringWithFormat:@"transform.rotation.%@", direction];
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
-    animation.fromValue = @(2*M_PI);
-    
+    animation.fromValue = @(2 * M_PI);
+
     //恢复之前
     animation.removedOnCompletion = YES;
     animation.fillMode = kCAFillModeRemoved;
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
 
 #pragma mark 抖动
-- (void)animationJitter:(UIView *)view{
-    
-    CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];;
+- (void)animationJitter:(UIView *)view {
+    CAKeyframeAnimation *animation = [CAKeyframeAnimation animation];
+    ;
     //动画效果
     animation.keyPath = @"transform.rotation";
     //进行改变
-    animation.values = @[@(kSHAngle(-5)),  @(kSHAngle(5)), @(kSHAngle(-5))];
+    animation.values = @[ @(kSHAngle(-5)), @(kSHAngle(5)), @(kSHAngle(-5)) ];
     //次数
     animation.repeatCount = 2;
     //时间
@@ -243,7 +244,7 @@
     //恢复之前
     animation.removedOnCompletion = YES;
     animation.fillMode = kCAFillModeRemoved;
-    
+
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
 }
@@ -258,15 +259,15 @@
     if (!view) {
         view = [[[UIApplication sharedApplication] windows] lastObject];
     }
-    
+
     NSAssert(self.contentView != nil, @"contentView 不能为空！");
 
     self.frame = view.bounds;
-    
+
     [view addSubview:self];
     [self bringSubviewToFront:self.contentView];
     _isShowing = YES;
-    
+
     [self.contentView.layer removeAnimationForKey:kSHPopViewAnimation];
     //动画
     switch (self.showAnimation) {
@@ -287,23 +288,23 @@
         case SHPopViewAnimation_right: {
             [self showAnimationRight:self.contentView];
         } break;
-        case SHPopViewAnimation_rotationX:{
+        case SHPopViewAnimation_rotationX: {
             [self animationRotation:self.contentView direction:@"x"];
         } break;
-        case SHPopViewAnimation_rotationY:{
+        case SHPopViewAnimation_rotationY: {
             [self animationRotation:self.contentView direction:@"y"];
         } break;
-        case SHPopViewAnimation_rotationZ:{
+        case SHPopViewAnimation_rotationZ: {
             [self animationRotation:self.contentView direction:@"z"];
         } break;
         default: {
             [self showAnimationFade:self.contentView];
         } break;
     }
-    
+
     if (self.isJitter) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self animationJitter:self.contentView];
+          [self animationJitter:self.contentView];
         });
     }
 }
@@ -315,11 +316,11 @@
     }
     _isShowing = NO;
     [self.contentView.layer removeAnimationForKey:kSHPopViewAnimation];
-    
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self remove];
+      [self remove];
     });
-    
+
     //动画
     switch (self.hideAnimation) {
         case SHPopViewAnimation_none: {
@@ -340,13 +341,13 @@
         case SHPopViewAnimation_right: {
             [self hideAnimationRight:self.contentView];
         } break;
-        case SHPopViewAnimation_rotationX:{
+        case SHPopViewAnimation_rotationX: {
             [self animationRotation:self.contentView direction:@"x"];
         } break;
-        case SHPopViewAnimation_rotationY:{
+        case SHPopViewAnimation_rotationY: {
             [self animationRotation:self.contentView direction:@"y"];
         } break;
-        case SHPopViewAnimation_rotationZ:{
+        case SHPopViewAnimation_rotationZ: {
             [self animationRotation:self.contentView direction:@"z"];
         } break;
         default: {
