@@ -29,9 +29,10 @@
     self.popView.contentView = lab;
     self.popView.showAnimation = SHPopViewAnimation_top;
     self.popView.hideAnimation = SHPopViewAnimation_bottom;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.popView show];
-    });
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.popView show];
 }
 
 @end

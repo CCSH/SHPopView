@@ -22,10 +22,6 @@
     if (self) {
         self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
         self.duration = 0.25;
-        //点击消失
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
-        tap.delegate = self;
-        [self addGestureRecognizer:tap];
     }
     return self;
 }
@@ -263,9 +259,14 @@
     NSAssert(self.contentView != nil, @"contentView 不能为空！");
 
     self.frame = view.bounds;
-
     [view addSubview:self];
-    [self bringSubviewToFront:self.contentView];
+
+    if (self.isClickDisappear) {
+        //点击消失
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
+        tap.delegate = self;
+        [self addGestureRecognizer:tap];
+    }
     _isShowing = YES;
 
     [self.contentView.layer removeAnimationForKey:kSHPopViewAnimation];

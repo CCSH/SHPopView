@@ -36,6 +36,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) BOOL isJitter;
 //内容是否显示中
 @property (nonatomic, assign, readonly) BOOL isShowing;
+//点击背景消失
+@property (nonatomic, assign) BOOL isClickDisappear;
 
 #pragma mark 显示
 - (void)show;
