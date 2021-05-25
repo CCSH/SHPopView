@@ -10,40 +10,39 @@
 #define kSHPopViewAnimation @"kSHPopViewAnimation"
 #define kSHAngle(R) ((R) / 180.0 * M_PI)
 
-@interface SHPopView ()
-
-@property (nonatomic, strong) UIView *maskView;
+@interface SHPopView ()<UIGestureRecognizerDelegate>
 
 @end
 
 @implementation SHPopView
 
 #pragma mark 初始化
-- (instancetype)init {
-    self = [super init];
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
-        self.maskColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+        self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
         self.duration = 0.25;
+        //点击消失
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
+        tap.delegate = self;
+        [self addGestureRecognizer:tap];
     }
     return self;
 }
 
-#pragma mark 懒加载
-- (UIView *)maskView {
-    if (!_maskView) {
-        _maskView = [[UIView alloc] init];
-        _maskView.layer.masksToBounds = YES;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
-        [_maskView addGestureRecognizer:tap];
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isDescendantOfView:self.contentView]) {
+        return NO;
     }
-    return _maskView;
+    return YES;
 }
 
+#pragma mark 懒加载
 - (void)setContentView:(UIView *)contentView {
     [_contentView.layer removeAnimationForKey:kSHPopViewAnimation];
     [_contentView removeFromSuperview];
     _contentView = contentView;
-    [self.maskView addSubview:contentView];
+    [self addSubview:contentView];
 }
 
 #pragma mark 获取动画
@@ -62,7 +61,7 @@
 
 #pragma mark 移除
 - (void)remove {
-    [self.maskView removeFromSuperview];
+    [self removeFromSuperview];
 }
 
 #pragma mark - 动画
@@ -108,7 +107,7 @@
     animation.keyPath = @"position.y";
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
-    animation.fromValue = @(CGRectGetHeight(self.maskView.frame) + CGRectGetMidY(view.frame));
+    animation.fromValue = @(CGRectGetHeight(self.frame) + CGRectGetMidY(view.frame));
     
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
@@ -132,7 +131,7 @@
     animation.keyPath = @"position.x";
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
-    animation.fromValue = @(CGRectGetWidth(self.maskView.frame) + CGRectGetMidX(view.frame));
+    animation.fromValue = @(CGRectGetWidth(self.frame) + CGRectGetMidX(view.frame));
     
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
@@ -181,7 +180,7 @@
     animation.keyPath = @"position.y";
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
-    animation.toValue = @(CGRectGetHeight(self.maskView.frame) + CGRectGetMidY(view.frame));
+    animation.toValue = @(CGRectGetHeight(self.frame) + CGRectGetMidY(view.frame));
     
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
@@ -205,7 +204,7 @@
     animation.keyPath = @"position.x";
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     //进行改变
-    animation.toValue = @(CGRectGetWidth(self.maskView.frame) + CGRectGetMidX(view.frame));
+    animation.toValue = @(CGRectGetWidth(self.frame) + CGRectGetMidX(view.frame));
     
     //视图添加动画
     [view.layer addAnimation:animation forKey:kSHPopViewAnimation];
@@ -261,11 +260,11 @@
     }
     
     NSAssert(self.contentView != nil, @"contentView 不能为空！");
-    //蒙板
-    self.maskView.frame = view.bounds;
-    self.maskView.backgroundColor = self.maskColor;
-    [view addSubview:self.maskView];
 
+    self.frame = view.bounds;
+    
+    [view addSubview:self];
+    [self bringSubviewToFront:self.contentView];
     _isShowing = YES;
     
     [self.contentView.layer removeAnimationForKey:kSHPopViewAnimation];
