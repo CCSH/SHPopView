@@ -27,8 +27,10 @@
     
     self.popView = [[SHPopView alloc] init];
     self.popView.contentView = lab;
-    self.popView.showAnimation = SHPopViewAnimation_top;
-    self.popView.hideAnimation = SHPopViewAnimation_bottom;
+    self.popView.showAnimation = SHPopViewAnimation_spring_left;
+    
+    self.popView.duration = -1;
+    self.popView.isClickDisappear = YES;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
